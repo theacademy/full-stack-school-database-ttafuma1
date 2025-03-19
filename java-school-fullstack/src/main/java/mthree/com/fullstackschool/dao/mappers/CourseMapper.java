@@ -17,6 +17,7 @@ public class CourseMapper implements RowMapper<Course> {
         course.setTeacherId(rs.getInt("teacherId"));
         return course;
 
+
         //YOUR CODE ENDS HERE
     }
 }
