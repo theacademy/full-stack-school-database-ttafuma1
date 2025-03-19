@@ -1,9 +1,13 @@
 package mthree.com.fullstackschool.controller;
 
+import mthree.com.fullstackschool.model.Student;
 import mthree.com.fullstackschool.model.Teacher;
 import mthree.com.fullstackschool.service.TeacherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @RestController
@@ -18,7 +22,7 @@ public class TeacherController {
     public List<Teacher> getAllTeachers() {
         //YOUR CODE STARTS HERE
 
-        return null;
+        return teacherServiceImpl.getAllTeachers();
 
         //YOUR CODE ENDS HERE
     }
@@ -27,7 +31,14 @@ public class TeacherController {
     public Teacher getTeacherById(@PathVariable int id) {
         //YOUR CODE STARTS HERE
 
-        return null;
+        Teacher response = teacherServiceImpl.getTeacherById(id);
+
+        if (response == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID NOT FOUND");
+        }
+
+        return response;
+
 
         //YOUR CODE ENDS HERE
     }
@@ -36,7 +47,7 @@ public class TeacherController {
     public Teacher addTeacher(@RequestBody Teacher teacher) {
         //YOUR CODE STARTS HERE
 
-        return null;
+        return teacherServiceImpl.addNewTeacher(teacher);
 
         //YOUR CODE ENDS HERE
     }
@@ -45,7 +56,16 @@ public class TeacherController {
     public Teacher updateTeacher(@PathVariable int id, @RequestBody Teacher teacher) {
         //YOUR CODE STARTS HERE
 
-        return null;
+        if (id != teacher.getTeacherId()) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "ID NOT FOUND.");
+        }
+
+        Teacher response = teacherServiceImpl.updateTeacherData(id, teacher);
+        if (response == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "STUDENT NOT FOUND." + id);
+        }
+
+        return response;
 
         //YOUR CODE ENDS HERE
     }
@@ -54,7 +74,7 @@ public class TeacherController {
     public void deleteTeacher(@PathVariable int id) {
         //YOUR CODE STARTS HERE
 
-
+        teacherServiceImpl.deleteTeacherById(id);
 
         //YOUR CODE ENDS HERE
     }
